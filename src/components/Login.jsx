@@ -4,7 +4,7 @@ import { Button } from '@material-ui/core'
 import styled from 'styled-components'
 
 import Pingu from '../assets/penguin.svg'
-// import {} from ''
+import { signInWithGoogle } from '../firebase/firebase'
 
 const Login = () => {
     return (
@@ -14,7 +14,7 @@ const Login = () => {
                     <LoginImage src={Pingu} alt="logo" />
                 </LogoContainer>
                 <LoginTitle>Pingu</LoginTitle>
-                <LoginButton>Sign In</LoginButton>
+                <LoginButton onClick={signInWithGoogle}>Sign In</LoginButton>
             </LoginContainer>
         </div>
     )
