@@ -61,13 +61,13 @@ const Chat = ({ user }) => {
                 </ChatHeader>
             </ChatHeaderContainer>
 
-            {/* <ChatMessagesContainer>
+            <ChatMessagesContainer>
                 { messages && messages.map(
                     ({ id, data}) => (
                         <Message key={id} contents={data} user={user}/>
                     )
                 )}
-            </ChatMessagesContainer> */}
+            </ChatMessagesContainer>
 
             <ChatInputContainer>
                 <ChatForm>

@@ -6,9 +6,8 @@ import * as timeago from 'timeago.js'
 
 // import { selectUser } from '../redux/features/userSlice'
 
-const Message = ({ user, content:{email, photo,message,timestamp}}) => {
-    
-    const isUser = user.email === email
+const Message = ({ user, contents: { email, photo, message, timestamp }}) => {
+  const isUser = user?.email === email
     
     return (
         <MessageContainer $sender={isUser}>
