@@ -2,11 +2,13 @@ import React from 'react'
 import styled from 'styled-components'
 import { Avatar } from '@material-ui/core'
 import * as timeago from 'timeago.js'
-// import { useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 
-// import { selectUser } from '../redux/features/userSlice'
+import { selectUser } from '../redux/features/userSlice'
 
-const Message = ({ user, contents: { email, photo, message, timestamp }}) => {
+const Message = ({ contents: { email, photo, message, timestamp }}) => {
+
+  const user = useSelector(selectUser)
   const isUser = user?.email === email
     
     return (

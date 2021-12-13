@@ -11,12 +11,15 @@ import {
   orderBy,
 } from 'firebase/firestore'
 import { signOut } from 'firebase/auth'
+import { useSelector}  from 'react-redux'
 
 import { auth, db } from '../firebase/firebase'
 import SidebarChat from './SidebarChat'
+import {selectUser} from '../redux/features/userSlice'
 
-const SideBar = ({ user }) => {
+const SideBar = () => {
   const [chats, setChats] = useState([])
+  const user = useSelector(selectUser)
 
   useEffect(() => {
     if (chats.length === 0) {

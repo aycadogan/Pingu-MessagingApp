@@ -10,20 +10,23 @@ import {
     orderBy,
     getDocs,
   } from 'firebase/firestore'
+  import { useSelector } from 'react-redux'
 
   import { db } from '../firebase/firebase'
   import Message from './Message'
+  import { selectUser } from '../redux/features/userSlice'
+  import {selectChatId, selectChatName} from '../redux/features/chatSlice'
 
-const Chat = ({ user }) => {
-    const [messages, setMessages] = useState([null])
+const Chat = () => {
+    const [messages, setMessages] = useState(null)
     const [input, setInput] =useState('')
 
-    useEffect(() => {
-        fetchMessages()
-    }, [])
+    const user = useSelector(selectUser)
+    const chatName = useSelector(selectChatName)
+    const chatId = useSelector(selectChatId)
 
-    const fetchMessages = async () => {
-        const msgRef = collection(db, 'chats', 'QcRrJSDkPtE1IpE2zyBI', 'messages')
+    const fetchMessages = useCallback(async () => {
+        const msgRef = collection(db, 'chats', chatId, 'messages')
         const q = query(msgRef, orderBy('timestamp', 'asc'))
         await getDocs(q).then((snapshot) => {
             setMessages(snapshot.docs.map((doc) => ({ 
@@ -31,14 +34,22 @@ const Chat = ({ user }) => {
                 data: doc.data() 
             })))
         })
-    }
+    },[chatId])
+
+    useEffect(() => {
+        if(chatId){
+            fetchMessages()
+        }
+    }, [chatId, fetchMessages])
+
+    // QcRrJSDkPtE1IpE2zyBI
 
     const sendMessage = async (e) => {
         e.preventDefault()
 
         const data = {
             uid: user.uid,
-            photo: user.photoURL || 'https://source.unsplash.com/200x200/nature',
+            photo: user.photoURL || '',
             email: user.email,
             displayName: user.displayName,
             message: input,
@@ -46,7 +57,7 @@ const Chat = ({ user }) => {
         }
         
 
-        const newMessageRef = collection(db, 'chats', 'QcRrJSDkPtE1IpE2zyBI','messages')
+        const newMessageRef = collection(db, 'chats', chatId,'messages')
         await addDoc(newMessageRef, data).then(() => {
             fetchMessages()
             setInput('')
@@ -57,14 +68,14 @@ const Chat = ({ user }) => {
         <ChatContainer>
             <ChatHeaderContainer>
                 <ChatHeader>
-                    Room: <ChatName></ChatName>
+                    Room: <ChatName>{chatName}</ChatName>
                 </ChatHeader>
             </ChatHeaderContainer>
 
             <ChatMessagesContainer>
                 { messages && messages.map(
                     ({ id, data}) => (
-                        <Message key={id} contents={data} user={user}/>
+                        <Message key={id} contents={data} />
                     )
                 )}
             </ChatMessagesContainer>
